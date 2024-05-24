@@ -1,10 +1,15 @@
 package medicalapi.mediapi.entity;
 import java.sql.Date;
+import java.util.HashSet;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +29,13 @@ public class Doctor implements UserInterface {
     private int userType;
     private Date birthDate;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "patients",
+        joinColumns ={@JoinColumn(name = "doctorId",referencedColumnName = "doctorId")},
+        inverseJoinColumns = {@JoinColumn(name = "patientId",referencedColumnName = "patientId")}
+    )
+    private HashSet<Patient> patients = new HashSet<>();
     
     @Override
     public String setUserName(String username) {

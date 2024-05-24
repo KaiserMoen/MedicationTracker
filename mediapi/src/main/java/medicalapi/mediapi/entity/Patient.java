@@ -1,7 +1,11 @@
 package medicalapi.mediapi.entity;
 import java.sql.Date;
+import java.util.HashSet;
+
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
@@ -24,6 +28,18 @@ public class Patient implements UserInterface{
     private String middleName;
     private String surName;    
     private Date birthDate;
+
+    // For Patient to have a reference on the Illness table
+    @ManyToMany(mappedBy = "patients",fetch = FetchType.EAGER)
+    private HashSet<Illness> illnesses = new HashSet<>();
+
+    // For Patient to have a reference on the Medication table
+    @ManyToMany(mappedBy =  "patients", fetch = FetchType.EAGER)
+    private HashSet<Medication> medications = new HashSet<>();
+
+    // For Patient to have a reference on the Doctor table
+    @ManyToMany(mappedBy =  "patients", fetch = FetchType.EAGER)
+    private HashSet<Doctor> doctors = new HashSet<>();
 
     @Override
     public String setUserName(String username) {
